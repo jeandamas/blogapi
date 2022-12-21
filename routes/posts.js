@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Post = require("../models/Post");
+const { requireAuth } = require("../middleware/authMiddleware");
 
 router
     // GET ALL POSTS
@@ -18,7 +19,7 @@ router
     })
 
     // CREATE A NEW POST
-    .post("/", async (req, res) => {
+    .post("/", requireAuth, async (req, res) => {
         // create a new post object
         const post = new Post({
             title: req.body.title,
@@ -28,7 +29,7 @@ router
             // save the post to the database
             const savedPost = await post.save();
             // return the saved post as a JSON object
-            res.status(200).json(savedPost);
+            res.status(201).json(savedPost);
         } catch (err) {
             // return an error message if the post cannot be saved
             res.json({ message: err });
@@ -53,7 +54,7 @@ router
     })
 
     // DELETE A SPECIFIC POST
-    .delete("/:postID", async (req, res) => {
+    .delete("/:postID", requireAuth, async (req, res) => {
         try {
             // delete the post from the database
             const deletedPost = await Post.remove({ _id: req.params.postID });
@@ -66,7 +67,7 @@ router
     })
 
     // UPDATE A SPECIFIC POST
-    .patch("/:postID", async (req, res) => {
+    .patch("/:postID", requireAuth, async (req, res) => {
         try {
             // update the post in the database
             const updatedPost = await Post.updateOne(
