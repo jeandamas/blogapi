@@ -2,9 +2,6 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 require("dotenv/config");
 const Post = require("../models/Post");
-const { requireAuth } = require("../middleware/authMiddleware");
-const { requireAdminAuth } = require("../middleware/authMiddleware");
-const postController = require("../controllers/postController");
 
 module.exports.get_all_posts = async (req, res) => {
     try {
@@ -20,7 +17,7 @@ module.exports.get_all_posts = async (req, res) => {
     } catch (err) {
         // return an error message if the posts cannot be retrieved
         res.status(400).json({
-            status: 400,
+            statusCode: 400,
             message: "Failed",
             data: [err],
         });
@@ -36,11 +33,15 @@ module.exports.get_one_post = async (req, res) => {
         const post = await Post.findById(id);
 
         // return the post as a JSON object
-        res.status(200).json({ status: 200, message: "Success", data: post });
+        res.status(200).json({
+            statusCode: 200,
+            message: "Success",
+            data: post,
+        });
     } catch (err) {
         // return an error message if the post is not found
         res.status(401).json({
-            status: 401,
+            statusCode: 401,
             message: "post does not exist",
             data: err,
         });
@@ -89,7 +90,7 @@ module.exports.delete_one_post = async (req, res) => {
         });
         // return the deleted post as a JSON object
         res.status(200).json({
-            status: 200,
+            statusCode: 200,
             message: "success",
             data: [deletedPost],
         });
@@ -117,7 +118,7 @@ module.exports.like_one_post = async (req, res) => {
             res.status(400).send(error);
         }
     } else {
-        res.status(400).json({ status: 400, message: "failed" });
+        res.status(400).json({ statusCode: 400, message: "failed" });
     }
 };
 
@@ -132,14 +133,14 @@ module.exports.get_one_post_commments = async (req, res) => {
             });
         } else {
             res.status(200).json({
-                status: 200,
+                statusCode: 200,
                 message: "Success",
                 data: post.comments,
             });
         }
     } catch (error) {
         res.status(500).json({
-            status: 500,
+            statusCode: 500,
             message: "failed",
             data: error,
         });
@@ -158,17 +159,20 @@ module.exports.comment_to_a_post = async (req, res) => {
         // Add a comment to the post - function is defined in the Post schema
         await post.addComment(user.id, req.body.content);
 
-        res.status(201).json({ status: 201, message: "success", data: post });
+        res.status(201).json({
+            statusCode: 201,
+            message: "success",
+            data: post,
+        });
     } catch (error) {
         res.status(500).send(error);
     }
 };
 
 // UPDATE COMMENT ON POST - ROUTE: /posts/:postId/comments/:commentId
-// UPDATE COMMENT ON POST - ROUTE: /posts/:postId/comments/:commentId
 module.exports.update_comment = async (req, res) => {
     try {
-        // Verify the JWT token
+        // Verify the JWT token and retrieve User from database
         const token = req.cookies.jwt;
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
         let user = await User.findById(decodedToken.id);
@@ -178,7 +182,7 @@ module.exports.update_comment = async (req, res) => {
         if (!post) {
             return res
                 .status(404)
-                .json({ status: 404, message: "Post not found" });
+                .json({ statusCode: 404, message: "Post not found" });
         }
 
         // Find the comment by its ID
@@ -186,7 +190,7 @@ module.exports.update_comment = async (req, res) => {
         if (!comment) {
             return res
                 .status(404)
-                .json({ status: 404, message: "Comment not found" });
+                .json({ statusCode: 404, message: "Comment not found" });
         }
 
         // If user owns the comment, update the comment with the new content
@@ -195,7 +199,7 @@ module.exports.update_comment = async (req, res) => {
         } else {
             return res
                 .status(403)
-                .json({ status: 403, message: "Not authorized" });
+                .json({ statusCode: 403, message: "Not authorized" });
         }
 
         // Save the changes to the database
@@ -206,8 +210,55 @@ module.exports.update_comment = async (req, res) => {
         if (error.name === "JsonWebTokenError") {
             return res
                 .status(401)
-                .json({ status: 401, message: "Unauthorized" });
+                .json({ statusCode: 401, message: "Unauthorized" });
         }
         res.status(500).send(error);
+    }
+};
+
+// DELETE COMMENT FROM A POST
+module.exports.delete_comment = async (req, res) => {
+    try {
+        // Verify the JWT token and retrieve User from database
+        const token = req.cookies.jwt;
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+        let user = await User.findById(decodedToken.id);
+
+        // Find the post by its ID
+        const post = await Post.findById(req.params.postId);
+        if (!post) {
+            return res
+                .status(404)
+                .json({ statusCode: 404, message: "Post not found" });
+        }
+
+        // Find the comment by its ID
+        const comment = post.comments.id(req.params.commentId);
+        if (!comment) {
+            return res
+                .status(404)
+                .json({ statusCode: 404, message: "Comment not found" });
+        }
+
+        // If user owns the comment, update the comment with the new content
+        if (user._id.toString() === comment.user.toString()) {
+            // Remove the comment from the comments array
+            post.comments.id(req.params.commentId).remove();
+        } else {
+            return res
+                .status(403)
+                .json({ statusCode: 403, message: "Not authorized" });
+        }
+
+        // Save the changes to the database
+        await post.save();
+
+        res.send(post);
+    } catch (error) {
+        res.status(500).json({
+            statusCode: 500,
+            message: " server error",
+            data: [error],
+        });
     }
 };

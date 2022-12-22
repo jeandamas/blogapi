@@ -18,6 +18,11 @@ router
         "/:postId/comments/:commentId",
         requireAuth,
         postController.update_comment
+    )
+    .delete(
+        "/:postId/comments/:commentId",
+        requireAuth,
+        postController.delete_comment
     );
 
 module.exports = router;
