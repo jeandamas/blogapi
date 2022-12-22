@@ -4,7 +4,7 @@ require("dotenv/config");
 
 // HANDLE ERRORS
 const handleErrors = (err) => {
-    let errors = { email: "", password: "" };
+    let errors = { name: "", email: "", password: "" };
 
     // duplicate user validation
     if (err.code === 11000) {
@@ -36,18 +36,48 @@ module.exports.signup_get = (req, res) => {
     res.json({ page: "signup get page under construction" });
 };
 
+// CURRENT USER
+module.exports.user_get = (req, res) => {
+    const token = req.cookies.jwt;
+    // check it jwt exists and verified
+    if (token) {
+        jwt.verify(token, process.env.JWT_SECRET, async (err, decodedToken) => {
+            if (err) {
+                res.json({ status: 400, message: "an error occured", err });
+                next();
+            } else {
+                let user = await User.findById(decodedToken.id);
+                res.status(200).json({
+                    status: 200,
+                    message: "Current user",
+                    // data: [{ name: user.name, email: user.email }],
+                    data: user,
+                });
+            }
+        });
+    } else {
+        res.json({ message: "No user logged in" });
+    }
+};
+
+// LOGOUT USER
+module.exports.logout_get = (req, res) => {
+    res.cookie("jwt", "", { httpOnly: true, maxAge: 1000 });
+    res.status(200).json({ status: 200, message: "Logged out" });
+};
+
 module.exports.login_get = (req, res) => {
     res.json({ page: "login get page under construction" });
 };
 
-// CREATE NEW USER [SIGN UP POST]
+// CREATE NEW USER [SIGN UP -> POST]
 module.exports.signup_post = async (req, res) => {
     // Get email, password, and date from request body
-    const { email, password, date } = req.body;
+    const { name, email, password, date } = req.body;
 
     try {
         // Create new user
-        const user = await User.create({ email, password, date });
+        const user = await User.create({ name, email, password, date });
         // generate a token for user created
         const token = createToken(user._id);
         // store token as a cookie
@@ -56,8 +86,13 @@ module.exports.signup_post = async (req, res) => {
         res.status(201).json({
             status: 201,
             message: "Registered user created and user token created",
-            jwt: token,
-            "New User Email": user.email,
+            data: [
+                {
+                    jwt: token,
+                    "New User Name": user.name,
+                    "New User Email": user.email,
+                },
+            ],
         });
     } catch (err) {
         // If user creation fails return this json
@@ -81,8 +116,7 @@ module.exports.login_post = async (req, res) => {
         res.status(201).json({
             Status: 201,
             message: "user logged in and token created",
-            jwt: token,
-            "Logged in User Email": user.email,
+            data: [{ Name: user.name, Email: user.email, jwt: token }],
         });
 
         // res.status(200).json({
@@ -90,6 +124,9 @@ module.exports.login_post = async (req, res) => {
         // });
     } catch (err) {
         const errors = handleErrors(err);
-        res.status(400).json({ status: 400, errors });
+        res.status(400).json({
+            status: 400,
+            message: errors,
+        });
     }
 };
