@@ -11,6 +11,13 @@ router
     .post("/", requireAdminAuth, postController.add_new_post)
     .delete("/:postID", requireAdminAuth, postController.delete_one_post)
     .patch("/:postID", requireAdminAuth, postController.update_one_post)
-    .put("/:id/like", postController.like_one_post);
+    .post("/:id/like", requireAuth, postController.like_one_post)
+    .get("/:postId/comments", postController.get_one_post_commments)
+    .post("/:postId/comments", requireAuth, postController.comment_to_a_post)
+    .put(
+        "/:postId/comments/:commentId",
+        requireAuth,
+        postController.update_comment
+    );
 
 module.exports = router;

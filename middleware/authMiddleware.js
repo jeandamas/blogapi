@@ -92,23 +92,4 @@ const checkUser = (req, res, next) => {
     }
 };
 
-// RETURN CURRENT USER
-const currentUser = () => {
-    const token = req.cookies.jwt;
-    // check it jwt exists and verified
-    if (token) {
-        jwt.verify(token, process.env.JWT_SECRET, async (err, decodedToken) => {
-            if (err) {
-                return "";
-            } else {
-                let user = await User.findById(decodedToken.id);
-                res.json(user);
-                // return user;
-            }
-        });
-    } else {
-        return "";
-    }
-};
-
-module.exports = { requireAuth, checkUser, requireAdminAuth, currentUser };
+module.exports = { requireAuth, checkUser, requireAdminAuth };
