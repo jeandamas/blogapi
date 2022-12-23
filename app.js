@@ -31,3 +31,5 @@ mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true }, () => {
 
 // Start the server and have it listen for incoming requests on the specified port
 app.listen(PORT);
+
+module.exports = app;

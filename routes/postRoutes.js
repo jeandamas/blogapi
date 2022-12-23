@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const Post = require("../models/Post");
 const { requireAuth } = require("../middleware/authMiddleware");
 const { requireAdminAuth } = require("../middleware/authMiddleware");
 const postController = require("../controllers/postController");

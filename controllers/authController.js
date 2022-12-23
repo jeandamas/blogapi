@@ -114,9 +114,9 @@ module.exports.login_post = async (req, res) => {
         res.cookie("jwt", token, { httpOnly: true, maxAge: MAXAGE * 1000 });
         // Send response with created user and status code 201
         res.status(201).json({
-            Status: 201,
+            statusCode: 201,
             message: "user logged in and token created",
-            data: [{ Name: user.name, Email: user.email, jwt: token }],
+            data: { Name: user.name, Email: user.email, jwt: token },
         });
 
         // res.status(200).json({
