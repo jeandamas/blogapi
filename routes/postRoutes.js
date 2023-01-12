@@ -128,14 +128,31 @@ const postController = require("../controllers/postController");
  *           description: Internal Server Error.
  *         default:
  *           description: Unexpected error.
- */
-
-/**
- * @swagger
- * paths:
  *   /api/posts/{id}:
  *     get:
  *       summary: Get the blog post by ID
+ *       tags: [Blog posts]
+ *       parameters:
+ *         - in: path
+ *           name: id
+ *           schema:
+ *             type: string
+ *           required: true
+ *           description: The Blog post id
+ *       responses:
+ *         200:
+ *           description: The blog post
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#components/schemas/Post'
+ *         404:
+ *           description: The Blog post was not found
+ *   /api/posts/{id}/like:
+ *     post:
+ *       summary: Like the blog post by ID
+ *       security:
+ *         - JWT: []
  *       tags: [Blog posts]
  *       parameters:
  *         - in: path
