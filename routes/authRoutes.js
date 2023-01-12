@@ -88,11 +88,7 @@ const { requireAdminAuth } = require("../middleware/authMiddleware");
  *           description: Server error
  *         default:
  *           description: Unexpected error
- */
-
-/**
- * @swagger
- * paths:
+ *
  *   /api/login:
  *     post:
  *       tags: [Users]

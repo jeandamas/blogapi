@@ -14,7 +14,10 @@ const options = {
             description: "CRUD API for personal Website",
             version: "1.0.0",
         },
-        servers: [{ url: "http://localhost:5050" }],
+        servers: [
+            { url: "http://localhost:5050" },
+            { url: "jean-blogapi.up.railway.app" },
+        ],
     },
     // looks for configuration in specified directories
     apis: ["./routes/*.js"],
