@@ -16,7 +16,7 @@ const options = {
         },
         servers: [
             { url: "http://localhost:5050" },
-            { url: "jean-blogapi.up.railway.app" },
+            { url: "https://jean-blogapi.up.railway.app/" },
         ],
     },
     // looks for configuration in specified directories
