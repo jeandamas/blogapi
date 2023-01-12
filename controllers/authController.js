@@ -56,7 +56,10 @@ module.exports.user_get = (req, res) => {
             }
         });
     } else {
-        res.json({ message: "No user logged in" });
+        res.status(404).json({
+            statusCode: 404,
+            message: "Logged In User Not Found",
+        });
     }
 };
 
@@ -127,6 +130,27 @@ module.exports.login_post = async (req, res) => {
         res.status(400).json({
             status: 400,
             message: errors,
+        });
+    }
+};
+
+module.exports.get_all_users = async (req, res) => {
+    try {
+        // query the database for all users
+        const users = await User.find();
+
+        // return users as a JSON object
+        res.status(200).json({
+            statusCode: 200,
+            message: "success",
+            data: users,
+        });
+    } catch (err) {
+        // return an error message if the users cannot be retrieved
+        res.status(400).json({
+            statusCode: 400,
+            message: "Failed",
+            data: [err],
         });
     }
 };

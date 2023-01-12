@@ -4,12 +4,9 @@ let chaiHttp = require("chai-http");
 let app = require("../app");
 let should = chai.should();
 chai.use(chaiHttp);
-/*
- * Test the post /GET route
- */
-describe("/GET blog posts", () => {
-    console.log("BEGIN TESTING ENDPOINTS");
-    it("GET retrieve all posts from database", (done) => {
+
+describe("Blog posts endpoints", () => {
+    it("/GET all blog posts", (done) => {
         chai.request(app)
             .get("/api/posts")
             .end((err, res) => {
@@ -21,12 +18,36 @@ describe("/GET blog posts", () => {
                 done();
             });
     });
-});
 
-describe("/POST is post route protected", () => {
-    it("POST fail to add new post if user is not logged in", (done) => {
+    it("/GET one non-existing blog post", (done) => {
+        chai.request(app)
+            .get("/api/posts/nonExistingID")
+            .end((err, res) => {
+                res.should.have.status(404);
+                res.body.should.be.a("object");
+                res.body.should.have
+                    .property("message")
+                    .eql("post does not exist");
+                res.body.should.have.property("data");
+                done();
+            });
+    });
+
+    it("/GET like a blog post", (done) => {
+        chai.request(app)
+            .get("/api/nonExistingID/like")
+            .end((err, res) => {
+                res.should.have.status(404);
+                res.body.should.be.a("object");
+                done();
+            });
+    });
+
+    it("/POST post route protection", (done) => {
         let post = {
             title: "sample title",
+            imageURL:
+                "https://jeanbucket001.s3.us-west-2.amazonaws.com/profile+image.jpeg",
             content: "sample content",
         };
         chai.request(app)

@@ -40,8 +40,8 @@ module.exports.get_one_post = async (req, res) => {
         });
     } catch (err) {
         // return an error message if the post is not found
-        res.status(401).json({
-            statusCode: 401,
+        res.status(404).json({
+            statusCode: 404,
             message: "post does not exist",
             data: err,
         });
@@ -50,11 +50,11 @@ module.exports.get_one_post = async (req, res) => {
 
 module.exports.add_new_post = async (req, res) => {
     // create a new post object
-    const { title, content, date } = req.body;
+    const { title, imageURL, content, date } = req.body;
 
     try {
         // save the post to the database
-        const savedPost = await Post.create({ title, content, date });
+        const savedPost = await Post.create({ title, imageURL, content, date });
         // return the saved post as a JSON object
         res.status(201).json({
             statusCode: 200,
@@ -71,7 +71,13 @@ module.exports.update_one_post = async (req, res) => {
         // update the post in the database
         const updatedPost = await Post.updateOne(
             { _id: req.params.postID },
-            { $set: { title: req.body.title, content: req.body.content } }
+            {
+                $set: {
+                    title: req.body.title,
+                    imageURL: req.body.imageURL,
+                    content: req.body.content,
+                },
+            }
         );
         res.status(200).json({
             statusCode: 200,

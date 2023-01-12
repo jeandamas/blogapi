@@ -5,6 +5,10 @@ const PostSchema = mongoose.Schema({
         type: String,
         required: [true, "Please enter post title"],
     },
+    imageURL: {
+        type: String,
+        required: [true, "Please enter post image URL"],
+    },
     content: {
         type: String,
         required: [true, "Please enter post content"],
@@ -23,6 +27,33 @@ const PostSchema = mongoose.Schema({
         },
     ],
 });
+
+// SWAGGER
+
+/**
+ * @swagger
+ *  components:
+ *      chemas:
+ *          Post:
+ *              type:object
+ *              required:
+ *                  - title
+ *                  - content
+ *              properties:
+ *                  id:
+ *                      type:string
+ *                      description: The auto generated id
+ *                  title:
+ *                      type:string
+ *                      description: The post title
+ *                  content:
+ *                      type:string
+ *                      description: Content of the post
+ *                  example:
+ *                       id:eyJhbGciOiJIUzI1NiIsInR
+ *                       title: How to upload image to secure AWS S3
+ *                       content: Lorem lorem lorem. Lorem lorem lorem. Lorem lorem lorem.
+ **/
 
 // METHOD TO LIKE/UNLINE POST
 PostSchema.methods.toggleLike = function (userId) {

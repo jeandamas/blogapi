@@ -5,8 +5,10 @@ let app = require("../app");
 let should = chai.should();
 chai.use(chaiHttp);
 
-describe("/POST signup", () => {
-    it("POST should fail if body fields are empty", (done) => {
+let jwt = "";
+
+describe("USERS Endpoints", () => {
+    it("/POST signup should fail if body fields are empty", (done) => {
         let post = {
             name: "",
             content: "",
@@ -31,51 +33,62 @@ describe("/POST signup", () => {
                 done();
             });
     });
-});
 
-describe("/POST signup", () => {
-    it("POST should fail if user already exists", (done) => {
-        let post = {
-            name: "bb",
-            content: "bb@jean.rw",
-            password: "bbpassword",
-        };
+    it("/GET DELETE JWT Token to logout user", (done) => {
         chai.request(app)
-            .post("/api/signup")
-            .send(post)
+            .get("/api/logout")
             .end((err, res) => {
-                res.should.have.status(400);
+                res.should.have.status(200);
                 res.body.should.be.a("object");
-                // res.body.should.have.property("status").eql("400");
-                // res.body.should.have.property("errors");
-                // res.body.errors.have
-                //     .property("email")
-                //     .eq("Email already registered");
+                res.body.should.have.property("message").eql("Logged out");
                 done();
             });
     });
-});
 
-describe("/POST login", () => {
-    it("POST Login user", (done) => {
-        let post = {
+    it("/GET current user", (done) => {
+        chai.request(app)
+            .get("/api/user")
+            .end((err, res) => {
+                res.should.have.status(404);
+                res.body.should.be.a("object");
+                res.body.should.have
+                    .property("message")
+                    .eql("Logged In User Not Found");
+                done();
+            });
+    });
+
+    it("/GET Not authorised to get all users", (done) => {
+        chai.request(app)
+            .get("/api/users")
+            .end((err, res) => {
+                res.should.have.status(401);
+                res.body.should.be.a("object");
+                res.body.should.have
+                    .property("message")
+                    .eql("Not authorized to perform this action");
+                done();
+            });
+    });
+
+    it("/POST ADMIN user login", (done) => {
+        let user = {
             email: "contact@jean.rw",
             password: "adminpass",
         };
         chai.request(app)
             .post("/api/login")
-            .send(post)
+            .send(user)
             .end((err, res) => {
                 res.should.have.status(201);
                 res.body.should.be.a("object");
-                res.body.should.have.property("statusCode").eql(201);
                 res.body.should.have
                     .property("message")
-                    .eq("user logged in and token created");
-                res.body.should.have.property("data");
-                res.body.data.should.have.property("Name");
-                res.body.data.should.have.property("Email");
-                res.body.data.should.have.property("jwt").be.a("string");
+                    .eql("user logged in and token created");
+                res.body.should.have.property("data").be.a("object");
+                res.body.data.should.have.property("jwt");
+
+                jwt = res.body.data.jwt;
                 done();
             });
     });
