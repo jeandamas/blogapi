@@ -15,7 +15,7 @@ const options = {
             version: "1.0.0",
         },
         servers: [
-            { url: "http://localhost:5050" },
+            // { url: "http://localhost:5050" },
             { url: "https://jean-blogapi.up.railway.app/" },
         ],
     },
