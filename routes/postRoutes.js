@@ -54,7 +54,7 @@ const postController = require("../controllers/postController");
  * @swagger
  * tags:
  *   name: Blog posts
- *   description: Managing blog posts
+ *   description: API interaction with blog posts
  */
 
 /**
@@ -86,7 +86,7 @@ const postController = require("../controllers/postController");
  *         default:
  *           description: Unexpected error.
  *     post:
- *       summary: Add new Blog post
+ *       summary: ADMIN Add new Blog post
  *       tags: [Blog posts]
  *       security:
  *         - JWT: []
@@ -114,10 +114,6 @@ const postController = require("../controllers/postController");
  *       responses:
  *         201:
  *           description: Blog post created successfully.
- *           content:
- *             application/json:
- *               schema:
- *                 $ref: '#/components/schemas/Post'
  *         400:
  *           description: Invalid request. Missing required fields or invalid data provided.
  *         401:
@@ -141,16 +137,85 @@ const postController = require("../controllers/postController");
  *           description: The Blog post id
  *       responses:
  *         200:
- *           description: The blog post
- *           content:
- *             application/json:
- *               schema:
- *                 $ref: '#components/schemas/Post'
+ *           description: Success
  *         404:
  *           description: The Blog post was not found
+ *     delete:
+ *       summary: ADMIN Delete the blog post by ID
+ *       security:
+ *         - JWT: []
+ *       description: ONLY ADMIN CAN DELETE A BLOG POST BY ID
+ *       tags: [Blog posts]
+ *       parameters:
+ *         - in: path
+ *           name: id
+ *           schema:
+ *             type: string
+ *           required: true
+ *           description: The Blog post id
+ *       responses:
+ *         200:
+ *           description: Successfuly deleted the blog post
+ *         400:
+ *           description: Invalid request. Missing required fields or invalid data provided.
+ *         401:
+ *           description: Unauthorized. Missing or invalid JWT provided.
+ *         403:
+ *           description: Forbidden. User does not have permission to create a blog post.
+ *         500:
+ *           description: Internal Server Error.
+ *         default:
+ *           description: Unexpected error.
+ *     patch:
+ *       summary: ADMIN update the blog post by ID
+ *       security:
+ *         - JWT: []
+ *       description: ONLY ADMIN CAN UPDATE A BLOG POST BY ID
+ *       tags: [Blog posts]
+ *       parameters:
+ *         - in: path
+ *           name: id
+ *           schema:
+ *             type: string
+ *           required: true
+ *           description: The Blog post id
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 title:
+ *                   type: string
+ *                   description: The updated title of the blog post.
+ *                 imageURL:
+ *                   type: string
+ *                   description: The updated image url of the post
+ *                 content:
+ *                   type: string
+ *                   description: The updated content body of the blog post.
+ *               required:
+ *                 - title
+ *                 - content
+ *                 - imageURL
+ *       responses:
+ *         200:
+ *           description: Successfuly updated the blog post
+ *         400:
+ *           description: Invalid request. Missing required fields or invalid data provided.
+ *         401:
+ *           description: Unauthorized. Missing or invalid JWT provided.
+ *         403:
+ *           description: Forbidden. User does not have permission to create a blog post.
+ *         500:
+ *           description: Internal Server Error.
+ *         default:
+ *           description: Unexpected error.
+ *
  *   /api/posts/{id}/like:
  *     post:
- *       summary: Like the blog post by ID
+ *       summary: USER Likes the blog post by ID
  *       security:
  *         - JWT: []
  *       tags: [Blog posts]
@@ -163,11 +228,7 @@ const postController = require("../controllers/postController");
  *           description: The Blog post id
  *       responses:
  *         200:
- *           description: The blog post
- *           content:
- *             application/json:
- *               schema:
- *                 $ref: '#components/schemas/Post'
+ *           description: Successfuly liked/unlined the post
  *         404:
  *           description: The Blog post was not found
  */

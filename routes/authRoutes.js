@@ -78,7 +78,7 @@ const { requireAdminAuth } = require("../middleware/authMiddleware");
  * @swagger
  * tags:
  *   name: Users
- *   description: Users API
+ *   description: API interaction with users
  */
 
 /**
@@ -140,7 +140,7 @@ const { requireAdminAuth } = require("../middleware/authMiddleware");
  *   /api/users:
  *     get:
  *       tags: [Users]
- *       summary: Retrieves a list of all registered users.
+ *       summary: ADMIN Retrieves a list of all registered users.
  *       security:
  *         - JWT: []
  *       description: Returns a list of all registered users ONLY ADMIN can perform this action"
@@ -174,7 +174,7 @@ const { requireAdminAuth } = require("../middleware/authMiddleware");
  *   /api/user:
  *     get:
  *       tags: [Users]
- *       summary: Current user details
+ *       summary: USER gets current user details
  *       security:
  *         -  JWT: []
  *       description: Details of the current user
