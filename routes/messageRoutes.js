@@ -62,7 +62,7 @@ const { requireAdminAuth } = require("../middleware/authMiddleware");
  *         default:
  *           description: Unexpected error.
  *     post:
- *       summary: ADMIN Add new message
+ *       summary: Add new message
  *       tags: [Contact messages]
  *       description: Creates a new message
  *       requestBody:
