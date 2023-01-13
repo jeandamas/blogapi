@@ -22,26 +22,63 @@ const { requireAdminAuth } = require("../middleware/authMiddleware");
  *         _id:
  *           type: string
  *           description: The auto generated user ID
- *           example: 63be8ed5bf27543b1e12c0e4
+ *           example: b22c463bf63bfb8b8b22c4
  *         name:
  *           type: string
  *           description: The name of the user
- *           example: Jean Damascene
+ *           example: user name
  *         email:
  *           type: string
  *           description: The user email
- *           example: contact@gmail.com
+ *           example: user@example.com
+ *         password:
+ *           type: string
+ *           description: The hashed user password
+ *           example: 0$FSoqIA$10$F./nKxadedZIMKIxdYJa./$2b$1SoqIAMKIxdYJanKxadedZI$2b
+ *         registration_date:
+ *           type: string
+ *           description: The auto generated user registration date
+ *           example: 2023-01-12T07:37:22.057Z
+ *     newUser:
+ *       type: object
+ *       required:
+ *         - name
+ *         - email
+ *         - password
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: The new user full name
+ *           example: user name
+ *         email:
+ *           type: string
+ *           description: The new user email
+ *           example: user@example.com
+ *         password:
+ *           type: string
+ *           description: The new user password
+ *           example: userpass
+ *     loginUser:
+ *       type: object
+ *       required:
+ *         - email
+ *         - password
+ *       properties:
+ *         email:
+ *           type: string
+ *           description: The user email
+ *           example: user@example.com
  *         password:
  *           type: string
  *           description: The user password
- *           example: 2b$10TDsG
+ *           example: userpass
  */
 
 /**
  * @swagger
  * tags:
  *   name: Users
- *   description: Managing Users
+ *   description: Users API
  */
 
 /**
@@ -57,22 +94,7 @@ const { requireAdminAuth } = require("../middleware/authMiddleware");
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 name:
- *                   type: string
- *                   description: The name of the user
- *                 email:
- *                   type: string
- *                   format: email
- *                   description: The email address of the user.
- *                 password:
- *                   type: string
- *                   description: The password of the user.
- *               required:
- *                 - name
- *                 - email
- *                 - password
+ *               "$ref": "#/components/schemas/newUser"
  *       responses:
  *         201:
  *           description: Successfully created a new user
@@ -99,32 +121,14 @@ const { requireAdminAuth } = require("../middleware/authMiddleware");
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 email:
- *                   type: string
- *                   format: email
- *                   description: The email address of the user.
- *                 password:
- *                   type: string
- *                   description: The password of the user.
- *               required:
- *                 - email
- *                 - password
+ *               $ref: '#/components/schemas/loginUser'
  *       responses:
  *         200:
  *           description: Successfully logged in
  *           content:
  *             application/json:
  *               schema:
- *                 type: object
- *                 properties:
- *                   token:
- *                     type: string
- *                     description: A JSON Web Token that can be used to authenticate future requests.
- *                   user:
- *                     $ref: '#/components/schemas/User'
- *                     description: The user object.
+ *                 $ref: '#/components/schemas/loginUser'
  *         400:
  *           description: Invalid request. Missing required fields or invalid data provided.
  *         401:
@@ -133,6 +137,60 @@ const { requireAdminAuth } = require("../middleware/authMiddleware");
  *           description: Server error.
  *         default:
  *           description: Unexpected error
+ *   /api/users:
+ *     get:
+ *       tags: [Users]
+ *       summary: Retrieves a list of all registered users.
+ *       security:
+ *         - JWT: []
+ *       description: Returns a list of all registered users ONLY ADMIN can perform this action"
+ *       responses:
+ *         200:
+ *           description: Success
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/User'
+ *         400:
+ *           description: Invalid request. Missing required fields or invalid data provided.
+ *         401:
+ *           description: Unauthorized. Missing or invalid JWT provided.
+ *         500:
+ *           description: Server error.
+ *         default:
+ *           description: Unexpected error
+ *   /api/logout:
+ *     get:
+ *       tags: [Users]
+ *       summary: Logout user
+ *       security:
+ *         -  JWT: []
+ *       description: Logs out current logged in user session
+ *       responses:
+ *         200:
+ *           description: Successfully logged out
+ *         500:
+ *           description: Internal Server Error - An error occurred while processing the request.
+ *   /api/user:
+ *     get:
+ *       tags: [Users]
+ *       summary: Current user details
+ *       security:
+ *         -  JWT: []
+ *       description: Details of the current user
+ *       responses:
+ *         200:
+ *           description: Successfully retriever user information
+ *         404:
+ *           description: No logged in user.
+ *         401:
+ *           description: Unauthorized. Missing or invalid JWT provided.
+ *         500:
+ *           description: Server error.
+ *         default:
+ *           description: Unexpected error
+ *
+ *
  */
 
 router
