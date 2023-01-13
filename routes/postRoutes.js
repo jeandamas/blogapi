@@ -231,6 +231,67 @@ const postController = require("../controllers/postController");
  *           description: Successfuly liked/unlined the post
  *         404:
  *           description: The Blog post was not found
+ *   /posts/{id}/comments:
+ *     get:
+ *       summary: Get the blog comments by blog post ID
+ *       tags: [Blog posts]
+ *       parameters:
+ *         - in: path
+ *           name: id
+ *           schema:
+ *             type: string
+ *           required: true
+ *           description: The Blog post id to commment on
+ *       responses:
+ *         200:
+ *           description: Success
+ *         400:
+ *           description: Invalid request. Missing required fields or invalid data provided.
+ *         401:
+ *           description: Unauthorized. Missing or invalid JWT provided.
+ *         404:
+ *           description: Blog post not found
+ *         500:
+ *           description: Internal Server Error.
+ *         default:
+ *           description: Unexpected error.
+ *     post:
+ *       summary: USER comments on the blog post
+ *       security:
+ *         - JWT: []
+ *       tags: [Blog posts]
+ *       parameters:
+ *         - in: path
+ *           name: id
+ *           schema:
+ *             type: string
+ *           required: true
+ *           description: The Blog post id to commment on
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 content:
+ *                   type: string
+ *                   description: The comment of the blog post.
+ *               required:
+ *                 - content
+ *       responses:
+ *         200:
+ *           description: Successfuly updated the blog post
+ *         400:
+ *           description: Invalid request. Missing required fields or invalid data provided.
+ *         401:
+ *           description: Unauthorized. Missing or invalid JWT provided.
+ *         403:
+ *           description: Forbidden. User does not have permission to create a blog post.
+ *         500:
+ *           description: Internal Server Error.
+ *         default:
+ *           description: Unexpected error.
  */
 
 router
