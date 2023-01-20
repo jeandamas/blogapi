@@ -12,11 +12,10 @@ module.exports.add_new_message = async (req, res) => {
             message,
             date,
         });
-        // return the saved message as a JSON object
-        res.status(201).json({
-            statusCode: 201,
-            message: "Message Created",
-            data: savedMessage,
+        // render the notifications.ejs template with a personalized thank you message
+        res.render("notifications", {
+            pageTitle: "Notification",
+            message: `Thank you ${savedMessage.name} for your message!`,
         });
     } catch (err) {
         // return an error message if the massage cannot be saved

@@ -1,0 +1,254 @@
+:root {
+    /* Bright Mode */
+    --mainbg: #dff6ff;
+    --bgcomplement: #f5f5ff;
+    --text-color: #06283d;
+    font-size: 16px;
+    --card-text: #06283d;
+
+    /* Dark Mode */
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    color: var(--text-color);
+    background-color: var(--mainbg);
+    margin: 0;
+}
+/* NAVIGATION BAR */
+header {
+    height: 80px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 10px auto;
+}
+
+ul {
+    display: flex;
+}
+
+nav ul {
+    flex-wrap: wrap;
+}
+
+ul {
+    display: flex;
+    list-style-type: none;
+}
+
+ul li a {
+    padding: 0 20px;
+    color: var(--text-color);
+    font-family: "Poppins", sans-serif;
+}
+
+ul li a:hover {
+    text-decoration-thickness: 0.3rem;
+}
+
+ul li a:active {
+    text-decoration-thickness: 0.5rem;
+}
+
+li {
+    margin: 10px;
+}
+
+main {
+    display: flex;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.profile-pic {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: auto;
+    height: 600px;
+}
+
+/* two divs alignment */
+.left-content {
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    margin-top: 30px;
+}
+.right-content {
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    align-items: center;
+}
+
+main h1 {
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 300;
+    font-size: 2rem;
+    line-height: 66px;
+}
+
+.title {
+    padding-bottom: 20px;
+    font-family: "Monaco";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.7rem;
+    line-height: 43px;
+    color: var(--text-color);
+}
+
+.card-title {
+    padding-bottom: 20px;
+    font-family: "Monaco";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.7rem;
+    line-height: 43px;
+    color: var(--dark-bg-text);
+}
+
+.text-content {
+    font-family: "Lato";
+    font-style: normal;
+    font-weight: 200;
+    font-size: 1.6rem;
+    line-height: 36px;
+    padding-top: 30px;
+}
+
+/* ---------- Portfolio ------------- */
+table {
+    width: 100%;
+}
+
+a {
+    color: var(--text-color);
+}
+
+td {
+    padding: 10px;
+}
+
+/*-------------- BLOGS ----------------*/
+.blogs-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+blog-img > img {
+    width: 50px;
+}
+
+.blog-box {
+    display: flex;
+    width: 100%;
+    height: auto;
+    padding: 30px;
+    background-color: aliceblue;
+
+    background: #ffffff;
+    box-shadow: 0px 20px 30px rgba(102, 106, 245, 0.13);
+    border-radius: 14px;
+
+    margin-top: 46px;
+}
+
+.blog-title {
+    font-family: "Oswald";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1.5rem;
+    line-height: 36px;
+    color: var(--text-color);
+}
+
+.read-more {
+    padding-top: 5px;
+}
+.blog-summary {
+    flex: 3;
+    width: 80%;
+}
+
+.blog-poster {
+    max-height: 100px;
+    flex: 1;
+}
+
+@media only screen and (max-width: 600px) {
+    img {
+        width: 80px;
+        height: auto;
+    }
+}
+/* --------------- Sign in -------------- */
+
+.form-box {
+    background: #ffffff;
+    box-shadow: 0px 20px 30px rgba(102, 106, 245, 0.13);
+    border-radius: 14px;
+    padding: 42px;
+    height: auto;
+    margin: 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-box p {
+    text-align: center;
+}
+
+input {
+    background: var(--bgcomplement);
+    border: 1px solid var(text-color);
+    width: 430px;
+    height: 50px;
+    padding: 0 20px;
+    /* padding: 16px 180px; */
+}
+.btn {
+    background-color: var(--text-color); /* Green */
+    border: none;
+    color: var(--bgcomplement);
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+/* contact */
+.message {
+    height: 3rem;
+}
+
+/* =====post===== */
+.post-container {
+    width: 80%;
+    margin: 50px auto;
+}
+
+.post-image > img {
+    width: 100%;
+}
+
+.text-area-input {
+    height: 150px;
+    display: block;
+}
