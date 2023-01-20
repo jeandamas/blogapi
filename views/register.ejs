@@ -1,0 +1,42 @@
+<%- include("partials/header") -%>
+<main>
+    <div class="blogs-container">
+        <div class="form-box">
+            <h2 class="card-title" id="message">Register</h2>
+            <form action="" id="registration-form">
+                <input
+                    type="text"
+                    class="loginput"
+                    minlength="4"
+                    id="name"
+                    name="name"
+                    placeholder="Full Name"
+                    required="required"
+                /><br /><br />
+                <input
+                    type="text"
+                    class="loginput"
+                    id=""
+                    name="email"
+                    placeholder="email"
+                    required="required"
+                /><br /><br />
+                <input
+                    type="password"
+                    class="loginput"
+                    id="newPassword"
+                    name="newPassword"
+                    placeholder="password (8 character minimum)"
+                    required="required"
+                    minlength="8"
+                    maxlength="10"
+                /><br /><br />
+                <button type="submit" class="btn">Submit</button>
+            </form>
+            <br />
+            <p style="text-align: left; padding: 10px">or</p>
+            <a href="login">Sign in </a>
+        </div>
+    </div>
+</main>
+<%- include("partials/footer") -%>

@@ -1,0 +1,40 @@
+<div class="blogs-container">
+    <div class="form-box">
+        <h2 class="card-title" id="message">Add new post</h2>
+        <form action="/api/posts" method="POST" id="new-post-form">
+            <input
+                type="text"
+                class="loginput"
+                id="title"
+                name="title"
+                placeholder="Blog Title"
+                required="required"
+            /><br /><br />
+            <input
+                type="text"
+                class="loginput"
+                id="image"
+                name="image"
+                placeholder="Image URL"
+                required="required"
+            /><br /><br />
+            <textarea
+                style="padding: 5px"
+                type="text-area"
+                rows="4"
+                cols="50"
+                class="text-area-input"
+                id="blog-content"
+                name="blog-content"
+                placeholder="Type Blog Content ..."
+                required="required"
+            ></textarea>
+
+            <br /><br />
+            <button type="Post" class="btn">Save</button>
+            <a href="/posts" class="btn" style="background-color: brown"
+                >Cancel</a
+            >
+        </form>
+    </div>
+</div>

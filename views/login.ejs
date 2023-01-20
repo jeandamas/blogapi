@@ -1,0 +1,31 @@
+<%- include("partials/header") -%>
+<main>
+    <div class="blogs-container">
+        <div class="form-box">
+            <h2 id="message" class="card-title">Log in</h2>
+            <form action="" id="form">
+                <input
+                    type="email"
+                    class="loginput"
+                    id="email"
+                    name="email"
+                    placeholder="email"
+                    required="required"
+                /><br /><br />
+                <input
+                    type="password"
+                    class="loginput"
+                    id="password"
+                    name="password"
+                    placeholder="password"
+                    required="required"
+                /><br /><br />
+                <button type="submit" class="btn">Sign in</button>
+            </form>
+            <br />
+            <p style="text-align: left; padding: 10px">or</p>
+            <a href="register">Register</a>
+        </div>
+    </div>
+</main>
+<%- include("partials/footer") -%>
