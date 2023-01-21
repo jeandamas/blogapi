@@ -4,6 +4,8 @@ const { route } = require("./postRoutes");
 const router = express.Router();
 const axios = require("axios");
 const API_URL = "localhost:5000";
+const session = require("express-session");
+const flash = require("connect-flash");
 const instance = axios.create({
     baseURL: "http://localhost:5050/",
     timeout: 50000,
@@ -38,7 +40,8 @@ router
         res.render("portfolio", { pageTitle: "Portfolio" });
     })
     .get("/login", (req, res) => {
-        res.render("login", { pageTitle: "Login" });
+        let message = req.flash("Add your credentials");
+        res.render("login", { pageTitle: "Login", message });
     })
     .get("/register", (req, res) => {
         res.render("register", { pageTitle: "Register" });
@@ -60,6 +63,9 @@ router
     })
     .get("/contact", (req, res) => {
         res.render("contact", { pageTitle: "Contact" });
+    })
+    .get("/logout", async (req, res) => {
+        res.redirect("/api/logout");
     });
 
 module.exports = router;

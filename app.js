@@ -4,6 +4,8 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
+const session = require("express-session");
+const flash = require("connect-flash");
 
 const path = require("path");
 
@@ -46,6 +48,15 @@ PORT = 5050;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(
+    session({
+        secret: "something",
+        cookie: { maxAge: 60000 },
+        resave: true,
+        saveUninitialized: true,
+    })
+);
+app.use(flash());
 // app.use(express.static("public"));
 // app.use(express.static(__dirname + "/public"));
 app.use(express.static(path.join(__dirname, "public")));

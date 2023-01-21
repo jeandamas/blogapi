@@ -163,7 +163,7 @@ module.exports.comment_to_a_post = async (req, res) => {
         const post = await Post.findById(req.params.postId);
 
         // Add a comment to the post - function is defined in the Post schema
-        await post.addComment(user.id, req.body.content);
+        await post.addComment(user.id, req.body.content, user.name);
 
         res.status(201).json({
             statusCode: 201,

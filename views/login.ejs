@@ -3,7 +3,8 @@
     <div class="blogs-container">
         <div class="form-box">
             <h2 id="message" class="card-title">Log in</h2>
-            <form action="" id="form">
+            <p id="hints"></p>
+            <form action="/login" method="POST" id="form">
                 <input
                     type="email"
                     class="loginput"
@@ -20,7 +21,9 @@
                     placeholder="password"
                     required="required"
                 /><br /><br />
-                <button type="submit" class="btn">Sign in</button>
+                <button type="submit" class="btn" onClick="submitForm()">
+                    Sign in
+                </button>
             </form>
             <br />
             <p style="text-align: left; padding: 10px">or</p>
@@ -29,3 +32,38 @@
     </div>
 </main>
 <%- include("partials/footer") -%>
+
+<script>
+    function submitForm() {
+        event.preventDefault();
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const formData = { email: email, password: password };
+
+        fetch("/api/login", {
+            method: "POST",
+            body: JSON.stringify(formData),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => {
+                if (response.ok) {
+                    response.json().then((data) => {
+                        console.log(response.data);
+                        window.location.href = "/";
+                    });
+                    // handle successful login
+                } else {
+                    document.getElementById("hints").innerHTML =
+                        "Wrong Email or Password";
+                    // handle error
+                }
+            })
+            .catch((error) => {
+                document.getElementById("hints").innerHTML =
+                    "Server error try again";
+                // handle error
+            });
+    }
+</script>

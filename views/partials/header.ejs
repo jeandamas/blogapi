@@ -30,3 +30,11 @@
         </header>
     </body>
 </html>
+
+<script>
+    var login = document.getElementsByTagName("a")[0];
+    if (document.cookie.indexOf("loggedin") > -1) {
+        login.innerHTML = "Log out";
+        login.href = "/logout";
+    }
+</script>

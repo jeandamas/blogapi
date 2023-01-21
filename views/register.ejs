@@ -2,8 +2,9 @@
 <main>
     <div class="blogs-container">
         <div class="form-box">
+            <p id="hints"></p>
             <h2 class="card-title" id="message">Register</h2>
-            <form action="" id="registration-form">
+            <form id="registration-form">
                 <input
                     type="text"
                     class="loginput"
@@ -11,7 +12,6 @@
                     id="name"
                     name="name"
                     placeholder="Full Name"
-                    required="required"
                 /><br /><br />
                 <input
                     type="text"
@@ -25,7 +25,7 @@
                     type="password"
                     class="loginput"
                     id="newPassword"
-                    name="newPassword"
+                    name="password"
                     placeholder="password (8 character minimum)"
                     required="required"
                     minlength="8"
@@ -40,3 +40,40 @@
     </div>
 </main>
 <%- include("partials/footer") -%>
+
+<script>
+    function submitForm() {
+        console.log("submitted");
+        event.preventDefault();
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const formData = { name: name, email: email, password: password };
+
+        fetch("/api/signup", {
+            method: "POST",
+            body: JSON.stringify(formData),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => {
+                if (response.ok) {
+                    response.json().then((data) => {
+                        console.log(response);
+                        window.location.href = "/";
+                    });
+                    // handle successful login
+                } else {
+                    document.getElementById("hints").innerHTML =
+                        "Fill the form correctly";
+                    // handle error
+                }
+            })
+            .catch((error) => {
+                document.getElementById("hints").innerHTML =
+                    "Fill the form correctly";
+                // handle error
+            });
+    }
+</script>
