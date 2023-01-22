@@ -90,21 +90,21 @@ module.exports.signup_post = async (req, res) => {
         // store token as a cookie
         res.cookie("jwt", token, { httpOnly: true, maxAge: MAXAGE * 1000 });
         // Send response with created user and status code 201
-        res.status(201).render("notifications", {
-            pageTitle: "Created Account",
-            message: "Welcome  account created",
-        });
-        // res.status(201).json({
-        //     status: 201,
-        //     message: "Registered user created and user token created",
-        //     data: [
-        //         {
-        //             jwt: token,
-        //             "New User Name": user.name,
-        //             "New User Email": user.email,
-        //         },
-        //     ],
+        // res.status(201).render("notifications", {
+        //     pageTitle: "Created Account",
+        //     message: "Welcome  account created",
         // });
+        res.status(201).json({
+            status: 201,
+            message: "Registered user created and user token created",
+            data: [
+                {
+                    jwt: token,
+                    "New User Name": user.name,
+                    "New User Email": user.email,
+                },
+            ],
+        });
     } catch (err) {
         // If user creation fails return this json
         // res.json({ message: err.message });

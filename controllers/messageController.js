@@ -1,3 +1,4 @@
+const { Admin } = require("mongodb");
 const Message = require("../models/Message");
 
 module.exports.add_new_message = async (req, res) => {
@@ -39,6 +40,10 @@ module.exports.get_all_messages = async (req, res) => {
             message: "success",
             data: messages,
         });
+        // res.status(200).render("admin", {
+        //     pageTitle: "Messages",
+        //     messages: messages,
+        // });
     } catch (err) {
         // return an error message if the posts cannot be retrieved
         res.status(400).json({

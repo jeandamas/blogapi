@@ -119,7 +119,8 @@ module.exports.like_one_post = async (req, res) => {
             // Toggle the like for the current user
             await post.toggleLike(user.id);
 
-            res.json(post);
+            res.status(200).json(post);
+            // res.status(200).render("posts/" + post._id);
         } catch (error) {
             res.status(400).send(error);
         }
@@ -163,7 +164,7 @@ module.exports.comment_to_a_post = async (req, res) => {
         const post = await Post.findById(req.params.postId);
 
         // Add a comment to the post - function is defined in the Post schema
-        await post.addComment(user.id, req.body.content, user.name);
+        await post.addComment(user.id, req.body.content);
 
         res.status(201).json({
             statusCode: 201,

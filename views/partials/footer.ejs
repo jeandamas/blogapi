@@ -1,4 +1,37 @@
 
 
 </body>
+<script>
+fetch('/api/user')
+  .then(response => response.json())
+  .then(data => {
+    if (data.status === 200 && data.data) {
+      // user is logged in, change button text to "Log out"
+      const authButton = document.getElementById("auth_button");
+      authButton.textContent = 'Log out';
+    }
+  })
+  .catch(err => console.error(err));
+
+document.getElementById("auth_button").addEventListener("click", function() {
+  if (this.textContent === "Log out") {
+    fetch('/api/logout')
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 200) {
+          // user is logged out, change button text to "Log in"
+          this.textContent = 'Log in';
+        }
+      })
+      .catch(err => console.error(err));
+  } else {
+    // redirect to login page
+    window.location.href = '/login';
+  }
+});
+
+</script>
+
+
+
 </html>

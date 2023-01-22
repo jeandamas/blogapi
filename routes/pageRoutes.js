@@ -17,7 +17,7 @@ router
     .get("/about", (req, res) => {
         res.render("about", { pageTitle: "About" });
     })
-    .get("/post/:id", async (req, res) => {
+    .get("/posts/:id", async (req, res) => {
         try {
             const postId = req.params.id;
             const response = await instance.get(`/api/posts/${postId}`);
@@ -29,6 +29,22 @@ router
                 });
             } else {
                 res.redirect("/posts");
+            }
+        } catch (error) {
+            console.log(error);
+            res.redirect("/posts");
+            // res.status(500).send(error);
+        }
+    })
+    .get("/like/:id", async (req, res) => {
+        try {
+            const postId = req.params.id;
+            const response = await instance.get(`/api/posts/${postId}/like`);
+            console.log(response.data);
+            if (response.data.statusCode === 200) {
+                res.redirect("/posts/" + postId);
+            } else {
+                res.redirect("/posts/");
             }
         } catch (error) {
             console.log(error);
