@@ -18,7 +18,7 @@
                     </h2>
                     <p class="text-content read-more">
                         <p>created at <%= post.date%></p>
-                        <a href="posts/update/<%= post._id %>"> Read more ...</a>
+                        <a href="posts/<%= post._id %>"> Read more ...</a>
                     </p><br>
                     <!-- DELETE THIS POST -->
                     <button onclick="handleDeletePost(event)" id="<%= post._id %>">
