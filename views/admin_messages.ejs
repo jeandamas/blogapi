@@ -1,0 +1,62 @@
+<%- include("partials/header") -%>
+    <main>
+        <div class="post-container">
+            <div class="article">
+                <a href="/admin"><p class="title" style="font-size: large;"><span class="material-symbols-outlined">
+                    undo
+                    </span>ADMIN PANEL</p></a>
+            </div>
+        </div>
+        <div class="blogs-container">
+            <p class="title">  
+                <span class="material-symbols-outlined">
+                mark_email_unread
+                </span> Messages</p>
+            <% messages.data.forEach(message => { %>
+            <div class="blog-box">
+                <div class="blog-summary">
+                    <h6 class="blog-title">
+                        <span class="material-symbols-outlined">
+                            person
+                            </span> <%= message.name %><hr>
+                    </h6>
+                    <p class="text-content read-more">                    
+                        <p>Message: <%= message.message%></p>
+                        <p>Reply: <a href="mailto:<%= message.email%>"><%= message.email%></a></p> 
+                       <span>Received on: <%= message.date %></span>
+
+                    </p>
+                    <p>
+                        <button onclick="handleDeleteMessage(event)" id="<%= message._id %>">
+                            DELETE<span class="material-symbols-outlined">
+                                delete </span>
+                        </button>
+                      
+                    
+                </div>
+            </div>
+            <% }); %>
+</main>
+<script>
+async function handleDeleteMessage(e) {
+    console.log("DELETING MESSAGE");
+    const messageID = e.target.id;
+    const url = "api/messages/" + messageID;
+    if (
+        confirm(
+            "Are you sure you want to delete this message? This action cannot be undone."
+        )
+    ) {
+        try {
+            await axios.delete(url);
+            location.reload();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+}
+
+</script>
+
+
+<%- include("partials/footer") -%>

@@ -200,6 +200,9 @@ router
     .post("/login", authConstroller.login_post)
     .get("/user", authConstroller.user_get)
     .get("/logout", authConstroller.logout_get)
-    .get("/users", requireAdminAuth, authConstroller.get_all_users);
+    // add requireAdminAuth
+    .get("/users", authConstroller.get_all_users)
+    // add requireAdminAuth
+    .delete("/users/:userID", authConstroller.delete_one_user);
 
 module.exports = router;

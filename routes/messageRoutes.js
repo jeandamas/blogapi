@@ -129,7 +129,10 @@ const { requireAdminAuth } = require("../middleware/authMiddleware");
 
 router
     .post("/", messageController.add_new_message)
-    .get("/", requireAdminAuth, messageController.get_all_messages)
+    // add requireAdminAuth
+    .get("/", messageController.get_all_messages)
+    // requireAdminAuth
+    .delete("/:messageID", messageController.delete_one_message)
     .get("/:messageID", messageController.get_one_message);
 
 module.exports = router;

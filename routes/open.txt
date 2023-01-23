@@ -1,0 +1,22 @@
+.get("/admin", requireAdminAuth, async (req, res) => {
+    try {
+        const messagesPromise = instance.get("/api/messages");
+        const postsPromise = instance.get("/api/posts");
+        const usersPromise = instance.get("/api/users");
+
+        const [messages, posts, users] = await Promise.all([
+            messagesPromise,
+            postsPromise,
+            usersPromise,
+        ]);
+        res.render("admin", {
+            pageTitle: "Admin",
+            messages: messages.data,
+            posts: posts.data,
+            users: users.data,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+    }
+});

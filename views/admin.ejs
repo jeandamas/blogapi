@@ -1,0 +1,42 @@
+<%- include("partials/header") -%>
+<main>
+    <!-- messages -->
+    <div class="post-container">
+        <div class="article">
+            <h1 class="title">ADMIN PANEL</h1>
+        </div>
+    </div>
+
+    <div class="adminboxes">
+        <div class="admindata">
+            <h2 class="blog-title">
+                Messages<br />
+                <a href="/messages"
+                    ><span class="material-symbols-outlined"> mail </span>
+                    <%=messages.data.length %></a
+                >
+            </h2>
+        </div>
+
+        <div class="admindata">
+            <h2 class="blog-title">
+                Blog Posts<br />
+                <a href="admin_posts">
+                    <span class="material-symbols-outlined"> description </span>
+                    <%=posts.data.length %>
+                </a>
+            </h2>
+        </div>
+        <div class="admindata">
+            <h2 class="blog-title">
+                Registered Users<br />
+                <a href="/users"
+                    ><span class="material-symbols-outlined"> group </span>
+                    <%=users.data.length %></a
+                >
+            </h2>
+        </div>
+    </div>
+</main>
+
+<%- include("partials/footer") -%>

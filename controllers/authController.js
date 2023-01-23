@@ -37,7 +37,7 @@ module.exports.signup_get = (req, res) => {
 };
 
 // CURRENT USER
-module.exports.user_get = (req, res) => {
+module.exports.user_get = (req, res, next) => {
     const token = req.cookies.jwt;
     // check it jwt exists and verified
     if (token) {
@@ -66,11 +66,7 @@ module.exports.user_get = (req, res) => {
 // LOGOUT USER
 module.exports.logout_get = (req, res) => {
     res.cookie("jwt", "", { httpOnly: true, maxAge: 1000 });
-    // res.status(200).json({ status: 200, message: "Logged out" });
-    res.status(200).render("notifications", {
-        pageTitle: "Logout",
-        message: "Logged out",
-    });
+    res.status(200).json({ status: 200, message: "Logged out" });
 };
 
 module.exports.login_get = (req, res) => {
@@ -90,26 +86,26 @@ module.exports.signup_post = async (req, res) => {
         // store token as a cookie
         res.cookie("jwt", token, { httpOnly: true, maxAge: MAXAGE * 1000 });
         // Send response with created user and status code 201
-        // res.status(201).render("notifications", {
-        //     pageTitle: "Created Account",
-        //     message: "Welcome  account created",
+        res.status(201).redirect("/");
+        // res.status(201).json({
+        //     status: 201,
+        //     message: "Registered user created and user token created",
+        //     data: [
+        //         {
+        //             jwt: token,
+        //             "New User Name": user.name,
+        //             "New User Email": user.email,
+        //         },
+        //     ],
         // });
-        res.status(201).json({
-            status: 201,
-            message: "Registered user created and user token created",
-            data: [
-                {
-                    jwt: token,
-                    "New User Name": user.name,
-                    "New User Email": user.email,
-                },
-            ],
-        });
     } catch (err) {
         // If user creation fails return this json
-        // res.json({ message: err.message });
         const errors = handleErrors(err);
-        res.status(400).json({ status: 400, errors });
+        res.status(400).render("register", {
+            pageTitle: "Register",
+            errors: errors,
+        });
+        // res.status(400).json({ status: 400, errors });
     }
 };
 
@@ -160,5 +156,24 @@ module.exports.get_all_users = async (req, res) => {
             message: "Failed",
             data: [err],
         });
+    }
+};
+
+module.exports.delete_one_user = async (req, res) => {
+    // res.send("DELETE USER");
+    try {
+        // delete the user from the database
+        const deletedUser = await User.deleteOne({
+            _id: req.params.userID,
+        });
+        // return the deleted post as a JSON object
+        res.status(200).json({
+            statusCode: 200,
+            message: "success",
+            data: [deletedUser],
+        });
+    } catch (err) {
+        // return an error message if the post cannot be deleted
+        res.json({ message: err });
     }
 };

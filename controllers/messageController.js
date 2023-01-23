@@ -77,3 +77,21 @@ module.exports.get_one_message = async (req, res) => {
         });
     }
 };
+
+module.exports.delete_one_message = async (req, res) => {
+    try {
+        // delete the post from the database
+        const deletedMessage = await Message.deleteOne({
+            _id: req.params.messageID,
+        });
+        // return the deleted post as a JSON object
+        res.status(200).json({
+            statusCode: 200,
+            message: "success",
+            data: [deletedMessage],
+        });
+    } catch (err) {
+        // return an error message if the post cannot be deleted
+        res.json({ message: err });
+    }
+};

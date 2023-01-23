@@ -1,3 +1,4 @@
+const { render } = require("ejs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 require("dotenv/config");
@@ -8,21 +9,23 @@ const requireAuth = (req, res, next) => {
     if (token) {
         jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
             if (err) {
-                res.json({
-                    status: 400,
-                    message: "Not authorized to perform this action",
-                    err,
-                });
-                console.log(decodedToken);
+                res.status(401).redirect("/login");
+                // res.json({
+                //     status: 400,
+                //     message: "Not authorized to perform this action",
+                //     err,
+                // });
+                // console.log(decodedToken);
             } else {
                 next();
             }
         });
     } else {
-        res.status(401).json({
-            Status: 401,
-            message: "Not authorized to perform this action",
-        });
+        res.status(401).redirect("/login");
+        // res.status(401).json({
+        //     Status: 401,
+        //     message: "Not authorized to perform this action",
+        // });
     }
 };
 
@@ -34,20 +37,22 @@ const requireAdminAuth = (req, res, next) => {
     if (token) {
         jwt.verify(token, process.env.JWT_SECRET, async (err, decodedToken) => {
             if (err) {
-                res.json({
-                    status: 400,
-                    message: "Not authorized to perform this action",
-                    err,
-                });
+                res.status(401).redirect("/login");
+                // res.json({
+                //     status: 400,
+                //     message: "Not authorized to perform this action",
+                //     err,
+                // });
             } else {
                 let user = await User.findById(decodedToken.id);
                 if (isAdmin(user.id)) {
                     next();
                 } else {
-                    res.status(401).json({
-                        status: 401,
-                        message: "Not authorized to perform this action",
-                    });
+                    res.status(401).redirect("/login");
+                    // res.status(401).json({
+                    //     status: 401,
+                    //     message: "Not authorized to perform this action",
+                    // });
                 }
             }
         });

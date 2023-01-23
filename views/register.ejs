@@ -1,10 +1,13 @@
 <%- include("partials/header") -%>
+
 <main>
     <div class="blogs-container">
         <div class="form-box">
             <p id="hints"></p>
             <h2 class="card-title" id="message">Register</h2>
-            <form id="registration-form">
+            <% if (errors) { %> <%= errors.name %> <%= errors.email %> <%=
+            errors.password %> <% } %>
+            <form id="registration-form" action="/api/signup" method="POST">
                 <input
                     type="text"
                     class="loginput"

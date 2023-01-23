@@ -56,11 +56,12 @@ module.exports.add_new_post = async (req, res) => {
         // save the post to the database
         const savedPost = await Post.create({ title, imageURL, content, date });
         // return the saved post as a JSON object
-        res.status(201).json({
-            statusCode: 200,
-            message: "new post created successfuly",
-            data: savedPost,
-        });
+        res.status(201).redirect("/admin_posts");
+        // res.status(201).json({
+        //     statusCode: 200,
+        //     message: "new post created successfuly",
+        //     data: savedPost,
+        // });
     } catch (err) {
         // return an error message if the post cannot be saved
         res.json({ message: err });
@@ -119,13 +120,16 @@ module.exports.like_one_post = async (req, res) => {
             // Toggle the like for the current user
             await post.toggleLike(user.id);
 
-            res.status(200).json(post);
+            // res.status(200).json(post);
+            res.status(200).redirect("/posts");
             // res.status(200).render("posts/" + post._id);
         } catch (error) {
-            res.status(400).send(error);
+            res.status(400).redirect("/login");
+            // res.status(400).send(error);
         }
     } else {
-        res.status(400).json({ statusCode: 400, message: "failed" });
+        res.status(400).redirect("/login");
+        // res.status(400).json({ statusCode: 400, message: "failed" });
     }
 };
 
@@ -165,12 +169,13 @@ module.exports.comment_to_a_post = async (req, res) => {
 
         // Add a comment to the post - function is defined in the Post schema
         await post.addComment(user.id, req.body.content);
+        res.status(201).redirect("/posts");
 
-        res.status(201).json({
-            statusCode: 201,
-            message: "success",
-            data: post,
-        });
+        // res.status(201).json({
+        //     statusCode: 201,
+        //     message: "success",
+        //     data: post,
+        // });
     } catch (error) {
         res.status(500).send(error);
     }

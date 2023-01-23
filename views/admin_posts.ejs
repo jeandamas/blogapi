@@ -1,0 +1,82 @@
+<%- include("partials/header") -%>
+
+    <main>
+        <div class="post-container">
+            <div class="article">
+                <a href="/admin"><p class="title" style="font-size: large;"><span class="material-symbols-outlined">
+                    undo
+                    </span>ADMIN PANEL</p></a>
+            </div>
+        </div>
+        <div class="blogs-container">
+            <p class="title">Blog posts</p>
+            <% posts.data.forEach(post => { %>
+            <div class="blog-box">
+                <div class="blog-summary">
+                    <h2 class="blog-title">
+                        <%= post.title %>
+                    </h2>
+                    <p class="text-content read-more">
+                        <p>created at <%= post.date%></p>
+                        <a href="posts/<%= post._id %>"> Read more ...</a>
+                    </p>
+                    <button onclick="handleDeletePost(event)" id="<%= post._id %>">
+                        DELETE<span class="material-symbols-outlined">
+                            delete </span>
+                    </button>
+                </div>
+                <div class="blog-img">
+                    <img src="<%= post.imageURL %>" alt="" class="blog-poster" />
+                </div>
+            </div>
+            <% }); %>
+</main>
+<main>
+    <div class="blogs-container">
+        <div class="form-box">
+            <h2 class="card-title">Create / Update post</h2>
+            <form id="form" action="/api/posts" method="POST">
+                <input
+                    type="text"
+                    class="loginput"
+                    name="title"
+                    placeholder="post title"
+                    required
+                /><br /><br />
+                <input
+                    type="url"
+                    class="loginput"
+                    name="imageURL"
+                    placeholder="post imageURL"
+                    required
+                /><br /><br />
+                <textarea name="content" id="" cols="52" rows="10" required></textarea>
+                
+                /><br /><br />
+                <button type="submit" class="btn">Submit</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+
+<script>
+    async function handleDeletePost(e) {
+        console.log("DELETING A POST");
+        const postID = e.target.id;
+        const url = 'api/posts/'+postID;
+        if (
+        confirm(
+            "Are you sure you want to delete this blog post? This action cannot be undone."
+        )
+        ) {
+            try {
+                await axios.delete(url);
+                location.reload();
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    }
+</script>
+<%- include("partials/footer") -%>

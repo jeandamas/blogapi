@@ -1,0 +1,59 @@
+<%- include("partials/header") -%>
+    <main>
+        <div class="post-container">
+            <div class="article">
+                <a href="/admin"><p class="title" style="font-size: large;"><span class="material-symbols-outlined">
+                    undo
+                    </span>ADMIN PANEL</p></a>
+            </div>
+        </div>
+        <div class="blogs-container">
+            <p class="title">  
+                <span class="material-symbols-outlined">
+                    group
+                    </span> Registered users</p>
+            <% users.data.forEach(user => { %>
+            <div class="blog-box">
+                <div class="blog-summary">
+                    <h6 class="blog-title">
+                        <span class="material-symbols-outlined">
+                            person
+                            </span> <%= user.name %><hr>
+                    </h6>
+                    <p class="text-content read-more">
+                      <p>email: <a href="mailto:<%= user.email%>"><%= user.email%></a></p> 
+                  
+                       <span>Registered on: <%= user.registration_date %></span>
+                    </p>
+                    <p>
+                        <button onclick="handleDeleteUser(event)" id="<%= user._id %>">
+                            DELETE USER<span class="material-symbols-outlined">
+                                delete </span>
+                        </button>
+                      
+                    
+                </div>
+            </div>
+            <% }); %>
+</main>
+<script>
+async function handleDeleteUser(e) {
+    console.log("DELETING USER");
+    const userID = e.target.id;
+    const url = 'api/users/'+userID;
+    if (
+        confirm(
+            "Are you sure you want to delete this user? This action cannot be undone."
+        )
+    ) {
+        try {
+            await axios.delete(url);
+            location.reload();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+}
+</script>
+<script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+<%- include("partials/footer") -%>
