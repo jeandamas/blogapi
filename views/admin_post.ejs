@@ -1,0 +1,136 @@
+<%- include("partials/header") -%>
+<main>
+    <div class="post-container">
+        <div class="article">
+            <a href="/admin_posts"
+                ><p class="title" style="font-size: large">
+                    <span class="material-symbols-outlined"> undo </span>MANAGE
+                    POSTS
+                </p></a
+            >
+        </div>
+    </div>
+    <div class="blogs-container">
+        <div class="form-box">
+            <!-- UPDATED POST -->
+            <h2 class="card-title">Update post</h2>
+            <form id="<%= post._id %>" onsubmit="updatePost(event)">
+                <input
+                    id="title"
+                    type="text"
+                    class="loginput"
+                    name="title"
+                    placeholder="post title"
+                    value="<%= post.title %>"
+                    required
+                /><br /><br />
+                <input
+                    type="url"
+                    ID="imageURL"
+                    class="loginput"
+                    name="imageURL"
+                    placeholder="post imageURL"
+                    value="<%= post.imageURL %>"
+                    required
+                /><br /><br />
+                <textarea
+                    name="content"
+                    id="content"
+                    cols="52"
+                    rows="10"
+                    required
+                >
+                  <%= post.content %>
+                </textarea>
+                <br /><br />
+                <button class="btn" id="<%= post._id %>">Save & Exit</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<main>
+    <div class="post-container">
+        <p class="title" style="color: brown">Preview</p>
+        <hr />
+        <div class="article">
+            <h1 class="title"><%= post.title %></h1>
+            <div class="post-image">
+                <img src="<%= post.imageURL %>" alt="" />
+            </div>
+
+            <p class="text-content"><%= post.content %></p>
+        </div>
+    </div>
+    <div class="post-container">
+        <div class="likes-container">
+            <i class="fa fa-thumbs-up"></i>
+            <h3 class="likes-title">
+                <!-- LIKE/UNLIKE LIKE/UNLIKE LIKE/UNLIKE LIKE/UNLIKE LIKE/UNLIKE-->
+                <form action="/api/posts/<%= post._id %>/like" method="post">
+                    <input
+                        class="like"
+                        type="Submit"
+                        name="like"
+                        value="Like"
+                    />
+
+                    Likes: <%= post.likes.length %>
+                </form>
+                <!-- LIKE/UNLIKE LIKE/UNLIKE LIKE/UNLIKE LIKE/UNLIKE LIKE/UNLIKE-->
+            </h3>
+        </div>
+        <div class="blogs-container">
+            <h3 class="title">Comments</h3>
+            <% post.comments.forEach(function(comment) { %>
+            <p class="text-content">
+                <%= comment.user %> - <%= comment.content %>
+                <br />
+            </p>
+            <% }); %>
+        </div>
+    </div>
+</main>
+<main>
+    <div class="blogs-container">
+        <div class="form-box">
+            <h2 class="card-title">Add New Comment</h2>
+            <form
+                id="form"
+                action="/api/posts/<%= post._id %>/comments"
+                method="POST"
+            >
+                <textarea name="content" id="" cols="130" rows="10"></textarea>
+                <br /><br />
+                <button type="submit" class="btn">Post</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<script>
+    async function updatePost(e) {
+        e.preventDefault();
+        const postID = e.target.id;
+        const url = "/api/posts/" + postID;
+        // const formData = new FormData(document.getElementById("form"));
+        const jsonData = {
+            title: document.getElementById("title").value,
+            imageURL: document.getElementById("imageURL").value,
+            content: document.getElementById("content").value,
+        };
+        if (
+            confirm(
+                "Are you sure you want to UPDATE this POST? This action cannot be undone."
+            )
+        ) {
+            try {
+                const res = await axios.put(url, jsonData);
+                location.reload();
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    }
+</script>
+<%- include("partials/footer") -%>

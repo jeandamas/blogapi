@@ -299,7 +299,8 @@ router
     .get("/:postID", postController.get_one_post)
     .post("/", requireAdminAuth, postController.add_new_post)
     .delete("/:postID", requireAdminAuth, postController.delete_one_post)
-    .patch("/:postID", requireAdminAuth, postController.update_one_post)
+    // .patch("/:postID", requireAdminAuth, postController.update_one_post)
+    .put("/:postID", requireAdminAuth, postController.update_one_post)
     // requireAuth
     .post("/:id/like", postController.like_one_post)
     .get("/:postId/comments", postController.get_one_post_commments)

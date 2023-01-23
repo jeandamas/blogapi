@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="blogs-container">
-            <p class="title">Blog posts</p>
+            <p class="title">MANAGE Blog posts</p>
             <% posts.data.forEach(post => { %>
             <div class="blog-box">
                 <div class="blog-summary">
@@ -18,12 +18,20 @@
                     </h2>
                     <p class="text-content read-more">
                         <p>created at <%= post.date%></p>
-                        <a href="posts/<%= post._id %>"> Read more ...</a>
-                    </p>
+                        <a href="posts/update/<%= post._id %>"> Read more ...</a>
+                    </p><br>
+                    <!-- DELETE THIS POST -->
                     <button onclick="handleDeletePost(event)" id="<%= post._id %>">
                         DELETE<span class="material-symbols-outlined">
                             delete </span>
                     </button>
+                    <!-- EDIT THIS POST -->
+                    <a href="admin_posts/<%= post._id %>"> <button">
+                        EDIT<span class="material-symbols-outlined">
+                            edit
+                            </span>
+                    </button></a>
+                    
                 </div>
                 <div class="blog-img">
                     <img src="<%= post.imageURL %>" alt="" class="blog-poster" />
@@ -34,7 +42,7 @@
 <main>
     <div class="blogs-container">
         <div class="form-box">
-            <h2 class="card-title">Create / Update post</h2>
+            <h2 class="card-title">Add post</h2>
             <form id="form" action="/api/posts" method="POST">
                 <input
                     type="text"

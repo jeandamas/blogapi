@@ -67,6 +67,30 @@ module.exports.add_new_post = async (req, res) => {
         res.json({ message: err });
     }
 };
+// module.exports.update_one_post = async (req, res) => {
+//     try {
+//         // update the post in the database
+//         const updatedPost = await Post.updateOne(
+//             { _id: req.params.postID },
+//             {
+//                 $set: {
+//                     title: req.body.title,
+//                     imageURL: req.body.imageURL,
+//                     content: req.body.content,
+//                 },
+//             }
+//         );
+//         // res.status(200).redirect("/posts");
+//         res.status(200).json({
+//             statusCode: 200,
+//             message: "Success",
+//             data: [updatedPost],
+//         });
+//     } catch (err) {
+//         // res.status(400).redirect("/login")
+//         res.status(400).json({ message: "Failed", data: [err] });
+//     }
+// };
 module.exports.update_one_post = async (req, res) => {
     try {
         // update the post in the database
@@ -80,12 +104,14 @@ module.exports.update_one_post = async (req, res) => {
                 },
             }
         );
+        // res.status(200).redirect("/posts");
         res.status(200).json({
             statusCode: 200,
             message: "Success",
             data: [updatedPost],
         });
     } catch (err) {
+        // res.status(400).redirect("/login")
         res.status(400).json({ message: "Failed", data: [err] });
     }
 };

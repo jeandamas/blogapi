@@ -7,8 +7,8 @@ const session = require("express-session");
 const flash = require("connect-flash");
 const { requireAdminAuth } = require("../middleware/authMiddleware");
 const axios = require("axios");
-// const BASE_URL = "http://localhost:5050/";
-const BASE_URL = "https://jean-blogapi-front.up.railway.app/";
+const BASE_URL = "http://localhost:5050/";
+// const BASE_URL = "https://jean-blogapi-front.up.railway.app/";
 const instance = axios.create({
     baseURL: BASE_URL,
     timeout: 50000,
@@ -25,7 +25,7 @@ router
         try {
             const postId = req.params.id;
             const response = await instance.get(`/api/posts/${postId}`);
-            console.log(response.data);
+            // console.log(response.data);
             if (response.data.statusCode === 200) {
                 res.render("post", {
                     pageTitle: "Blog",
@@ -43,9 +43,9 @@ router
     .get("/like/:id", async (req, res) => {
         try {
             const postId = req.params.id;
-            console.log(postId);
+            // console.log(postId);
             const response = await instance.post(`/api/posts/${postId}/like`);
-            console.log(response.data);
+            // console.log(response.data);
         } catch (error) {
             console.log(error);
             res.redirect("/posts");
@@ -157,11 +157,30 @@ router
                 posts: posts.data,
             });
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             res.status(500).send(error);
         }
     })
 
+    .get("/admin_posts/:id", requireAdminAuth, async (req, res) => {
+        try {
+            const postId = req.params.id;
+            const response = await instance.get(`/api/posts/${postId}`);
+            // console.log(response.data);
+            if (response.data.statusCode === 200) {
+                res.render("admin_post", {
+                    pageTitle: "Blog",
+                    post: response.data.data,
+                });
+            } else {
+                res.redirect("/posts");
+            }
+        } catch (error) {
+            console.log(error);
+            res.redirect("/posts");
+            // res.status(500).send(error);
+        }
+    })
     .get("/admin", requireAdminAuth, async (req, res) => {
         // const token = req.headers.authorization;
         const token = req.cookies.jwt;
