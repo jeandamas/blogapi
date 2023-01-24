@@ -8,8 +8,8 @@ const session = require("express-session");
 const flash = require("connect-flash");
 const { requireAdminAuth } = require("../middleware/authMiddleware");
 const axios = require("axios");
-// const AXIOS_BASE_URL = process.env.AXIOS_BASE_URL;
-const AXIOS_BASE_URL = "https://jean-blogapi-front.up.railway.app/";
+const AXIOS_BASE_URL = process.env.AXIOS_BASE_URL;
+// const AXIOS_BASE_URL = "https://jean-blogapi-front.up.railway.app/";
 const instance = axios.create({
     baseURL: AXIOS_BASE_URL,
     timeout: 50000,
