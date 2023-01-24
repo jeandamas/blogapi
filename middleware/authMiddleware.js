@@ -57,10 +57,11 @@ const requireAdminAuth = (req, res, next) => {
             }
         });
     } else {
-        res.status(401).json({
-            Status: 401,
-            message: "Not authorized to perform this action",
-        });
+        res.status(401).redirect("/login");
+        // res.status(401).json({
+        //     Status: 401,
+        //     message: "Not authorized to perform this action",
+        // });
     }
 };
 

@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const express = require("express");
+require("dotenv").config();
 const { route } = require("./postRoutes");
 const router = express.Router();
 const API_URL = "localhost:5000";
@@ -7,10 +8,10 @@ const session = require("express-session");
 const flash = require("connect-flash");
 const { requireAdminAuth } = require("../middleware/authMiddleware");
 const axios = require("axios");
-const BASE_URL = "http://localhost:5050/";
+const AXIOS_BASE_URL = process.env.AXIOS_BASE_URL;
 // const BASE_URL = "https://jean-blogapi-front.up.railway.app/";
 const instance = axios.create({
-    baseURL: BASE_URL,
+    baseURL: AXIOS_BASE_URL,
     timeout: 50000,
 });
 
@@ -64,8 +65,9 @@ router
     })
     .get("/posts", async (req, res) => {
         try {
-            const response = await instance.get("/api/posts");
-            res.render("posts", { pageTitle: "Posts", posts: response.data });
+            let response = await instance.get("/api/posts");
+            response = response.data.data;
+            res.render("posts", { pageTitle: "Posts", posts: response });
         } catch (error) {
             console.log(error);
             res.status(500).send(error);

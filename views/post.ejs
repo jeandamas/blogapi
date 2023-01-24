@@ -27,10 +27,13 @@
             </h3>
         </div>
         <div class="blogs-container">
-            <h3 class="title">Comments</h3>
+            <h3 class="title">
+                <span class="material-symbols-outlined"> comment </span>Comments
+            </h3>
             <% post.comments.forEach(function(comment) { %>
             <p class="text-content">
-                <%= comment.user %> - <%= comment.content %>
+                <span class="material-symbols-outlined"> person </span> - <%=
+                comment.content %>
                 <br />
             </p>
             <% }); %>
