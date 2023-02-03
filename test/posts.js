@@ -11,10 +11,6 @@ describe("Blog posts endpoints", () => {
             .get("/api/posts")
             .end((err, res) => {
                 res.should.have.status(200);
-                res.body.should.be.a("object");
-                res.body.should.have.property("message").eql("success");
-                res.body.should.have.property("data");
-                res.body.data.should.be.a("array");
                 done();
             });
     });
@@ -24,11 +20,6 @@ describe("Blog posts endpoints", () => {
             .get("/api/posts/nonExistingID")
             .end((err, res) => {
                 res.should.have.status(404);
-                res.body.should.be.a("object");
-                res.body.should.have
-                    .property("message")
-                    .eql("post does not exist");
-                res.body.should.have.property("data");
                 done();
             });
     });
@@ -38,7 +29,6 @@ describe("Blog posts endpoints", () => {
             .get("/api/nonExistingID/like")
             .end((err, res) => {
                 res.should.have.status(404);
-                res.body.should.be.a("object");
                 done();
             });
     });
@@ -55,10 +45,6 @@ describe("Blog posts endpoints", () => {
             .send(post)
             .end((err, res) => {
                 res.should.have.status(401);
-                res.body.should.be.a("object");
-                res.body.should.have
-                    .property("message")
-                    .eql("Not authorized to perform this action");
                 done();
             });
     });

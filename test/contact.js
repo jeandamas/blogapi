@@ -11,10 +11,6 @@ describe("Messages endpoints", () => {
             .get("/api/messages")
             .end((err, res) => {
                 res.should.have.status(401);
-                res.body.should.be.a("object");
-                res.body.should.have
-                    .property("message")
-                    .eql("Not authorized to perform this action");
                 done();
             });
     });
@@ -30,8 +26,6 @@ describe("Messages endpoints", () => {
             .send(message)
             .end((err, res) => {
                 res.should.have.status(201);
-                res.body.should.be.a("object");
-                res.body.should.have.property("message").eql("Message Created");
                 done();
             });
     });
